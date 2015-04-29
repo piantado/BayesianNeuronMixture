@@ -1,7 +1,7 @@
 import numpy
 from numpy import log
 
-def MHSampler(h, propose, data, burn=0, steps=1000000):
+def MHSampler(h, data, burn=0, steps=1000000):
     """
     Yield MH samples
 
@@ -12,7 +12,7 @@ def MHSampler(h, propose, data, burn=0, steps=1000000):
     h.compute_posterior(data)
 
     for i in xrange(steps):
-        p, fb = propose(h)
+        p, fb = h.propose()
         p.compute_posterior(data)
 
         if log(numpy.random.random()) < p.posterior_score - h.posterior_score - fb:
