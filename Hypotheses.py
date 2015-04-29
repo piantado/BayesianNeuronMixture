@@ -7,6 +7,7 @@ from scipy.misc import logsumexp
 from scipy.stats import multivariate_normal
 from Distributions import *
 
+
 origin = numpy.zeros(2)
 
 class H(object):
@@ -152,4 +153,5 @@ class H_2free_o(H):
         return zip(p.p, [c1.cov, c2.cov, c3.cov])
 
 
-
+# Define all possible types
+ALL_TYPES = [H_circ, H_x, H_plus, H_free, H_2free, H_circ_o, H_x_o, H_plus_o, H_free_o, H_2free_o]
