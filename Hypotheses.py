@@ -80,62 +80,68 @@ class H(object):
 """
     Now we define a number of hypothesis types. Each uses the Distributions stochastics, stored in an array
 """
+def zipa(*args):
+    # zip with assertion of equal length
+    l0=len(args[0])
+    assert all([len(a) == l0 for a in args])
+
+    return zip(*args)
 
 class H_circ(H):
     def __init__(self):
         self.independent_components = [ DirichletSample(1), CircularNormal2D() ] # NOTE We need to use DirichletSample(1) so we get a logp
     def get_weights_and_covariances(self):
         p, c = self.independent_components
-        return zip(p.p, [c.cov])
+        return zipa(p.p, [c.cov])
 
 class H_plus(H):
     def __init__(self):
         self.independent_components = [DirichletSample(2), AlignedNormal2D()]
     def get_weights_and_covariances(self):
         p, c = self.independent_components
-        return zip(p.p, [c.cov, rot90(c.cov)])
+        return zipa(p.p, [c.cov, rot90(c.cov)])
 
 class H_x(H):
     def __init__(self):
         self.independent_components = [ DirichletSample(2), FreeNormal2D() ]
     def get_weights_and_covariances(self):
         p, c = self.independent_components
-        return zip(p.p, [c.cov, rot90(c.cov)])
+        return zipa(p.p, [c.cov, rot90(c.cov)])
 
 class H_free(H):
     def __init__(self):
         self.independent_components = [ DirichletSample(1), FreeNormal2D() ]
     def get_weights_and_covariances(self):
         p, c = self.independent_components
-        return zip(p.p, [c.cov])
+        return zipa(p.p, [c.cov])
 
 class H_2free(H):
     def __init__(self):
         self.independent_components = [ DirichletSample(2), FreeNormal2D(), FreeNormal2D()  ]
     def get_weights_and_covariances(self):
         p, c1, c2 = self.independent_components
-        return zip(p.p, [c1.cov, c2.cov])
+        return zipa(p.p, [c1.cov, c2.cov])
 
 class H_circ_o(H):
     def __init__(self):
         self.independent_components = [ DirichletSample(2), CircularNormal2D(), CircularNormal2D()  ]
     def get_weights_and_covariances(self):
         p, c1, c2 = self.independent_components
-        return zip(p.p, [c1.cov, c2.cov])
+        return zipa(p.p, [c1.cov, c2.cov])
 
 class H_x_o(H):
     def __init__(self):
-        self.independent_components = [ DirichletSample(2), CircularNormal2D(),  FreeNormal2D() ]
+        self.independent_components = [ DirichletSample(3), CircularNormal2D(),  FreeNormal2D() ]
     def get_weights_and_covariances(self):
         p, c1, c2 = self.independent_components
-        return zip(p.p, [c1.cov, c2.cov, rot90(c2.cov)])
+        return zipa(p.p, [c1.cov, c2.cov, rot90(c2.cov)])
 
 class H_plus_o(H):
     def __init__(self):
-        self.independent_components = [ DirichletSample(2), CircularNormal2D(),  AlignedNormal2D() ]
+        self.independent_components = [ DirichletSample(3), CircularNormal2D(),  AlignedNormal2D() ]
     def get_weights_and_covariances(self):
         p, c1, c2 = self.independent_components
-        return zip(p.p, [c1.cov, c2.cov, rot90(c2.cov)])
+        return zipa(p.p, [c1.cov, c2.cov, rot90(c2.cov)])
 
 class H_free_o(H):
     def __init__(self):
@@ -143,14 +149,14 @@ class H_free_o(H):
 
     def get_weights_and_covariances(self):
         p, c1, c2 = self.independent_components
-        return zip(p.p, [c1.cov, c2.cov])
+        return zipa(p.p, [c1.cov, c2.cov])
 
 class H_2free_o(H):
     def __init__(self):
         self.independent_components = [ DirichletSample(3), CircularNormal2D(),  FreeNormal2D(), FreeNormal2D() ]
     def get_weights_and_covariances(self):
         p, c1, c2, c3 = self.independent_components
-        return zip(p.p, [c1.cov, c2.cov, c3.cov])
+        return zipa(p.p, [c1.cov, c2.cov, c3.cov])
 
 
 # Define all possible types

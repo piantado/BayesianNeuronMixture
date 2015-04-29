@@ -2,8 +2,8 @@ from Hypotheses import *
 from Infer import run_inference
 from Visualization import plot
 
-PLOT_EVERY = 1000
-BURN = 1000
+PLOT_EVERY = 10000
+BURN = 10000
 NDATA = 150
 
 thetypes = ALL_TYPES
