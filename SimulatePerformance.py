@@ -1,6 +1,11 @@
 """
     Assess performance through some simulations!
+
+    python SimulatePerformance.py > simulation.txt
+
+    Then run analyze-simulation.py in R
 """
+import sys
 from Hypotheses import ALL_TYPES
 from Infer import run_inference
 
@@ -13,8 +18,9 @@ for it in xrange(100):
             genh = t()
             data = genh.sample(N=ndata)
 
-            myiter = run_inference(ALL_TYPES, data, burn=1000, yield_every=1000)
+            myiter = run_inference(ALL_TYPES, data, burn=10000, yield_every=20000)
 
             _, _, model_marginals = myiter.next() # just yield once, via yield_every
 
             print it, ndata, ti, t.__name__, model_marginals[ti]/float(sum(model_marginals))
+            sys.stdout.flush()
