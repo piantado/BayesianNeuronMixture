@@ -7,8 +7,14 @@ from scipy.misc import logsumexp
 from scipy.stats import multivariate_normal
 from Distributions import *
 
-
 origin = numpy.zeros(2)
+
+## Matrix rotation
+m90 = numpy.matrix([[0,-1],[1,0]]) # the rotation matrix -- 90 degrees
+def rot90(m):
+    """ 90 degree rotation of m1 """
+    return (m90*m)*(m90.transpose())
+
 
 class H(object):
     """ A class to represent mixture hypotheses using a list of covariance matrices """
@@ -22,7 +28,7 @@ class H(object):
 
     def compute_prior(self):
         """ For now, we'll use our proposal probability. """
-        return sum([x.lp for x in self.independent_components])
+        return sum([x.compute_prior() for x in self.independent_components])
 
     def compute_posterior(self, data):
         try:
@@ -47,12 +53,10 @@ class H(object):
         i = random.randint(0, len(self.independent_components)-1)
 
         # For now, we'll propose from everything's prior
-        x = self.independent_components[i].propose() # just call the constructor
-
-        mynew.independent_components[i] = x # set it
+        mynew.independent_components[i], fb = self.independent_components[i].propose() # just call the constructor
 
         # Return the new guy and my fb
-        return mynew, (mynew.independent_components[i].lp - self.independent_components[i].lp)
+        return mynew, fb
 
 
     def compute_likelihood(self, data):

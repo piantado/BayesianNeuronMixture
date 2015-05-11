@@ -31,6 +31,9 @@ def run_inference(thetypes, data, burn=1000, yield_every=1000):
         for m, ms in enumerate(model_samplers):
             s = ms.next()
             samples.append(s)
+            if i == 3:
+                print s
+
             # Keep track of the best found for each
             if s.posterior_score > best_posterior[m]:
                 best_posterior[m] = s.posterior_score
