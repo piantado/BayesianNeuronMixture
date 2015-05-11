@@ -5,6 +5,11 @@
 
     Then run analyze-simulation.py in R
 
+    This primarily tells us that some of these models are easier to detect than others, even when the true model is known
+
+    We can run 5 jobs in parallel (using GNU parallel) via
+        $ seq 1 5 | parallel 'python SimulatePerformance.py' > simulation.txt
+
 """
 
 import sys
