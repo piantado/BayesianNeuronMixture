@@ -12,9 +12,8 @@ origin = numpy.zeros(2)
 ## Matrix rotation
 m90 = numpy.matrix([[0,-1],[1,0]]) # the rotation matrix -- 90 degrees
 def rot90(m):
-    """ 90 degree rotation of m1 """
+    """ 90 degree rotation of m """
     return (m90*m)*(m90.transpose())
-
 
 class H(object):
     """ A class to represent mixture hypotheses using a list of covariance matrices """
@@ -53,14 +52,14 @@ class H(object):
         i = random.randint(0, len(self.independent_components)-1)
 
         # For now, we'll propose from everything's prior
-        mynew.independent_components[i], fb = self.independent_components[i].propose() # just call the constructor
+        mynew.independent_components[i], fb = self.independent_components[i].propose() # propose
 
         # Return the new guy and my fb
         return mynew, fb
 
 
     def compute_likelihood(self, data):
-        ps, covs = zip(*self.get_weights_and_covariances()) #
+        ps, covs = zip(*self.get_weights_and_covariances())
 
         # get the log prob under each covariance matrix
         lps = map(lambda c: multivariate_normal.logpdf(data, mean=origin, cov=c), covs)
@@ -76,14 +75,17 @@ class H(object):
         # figure out how to divide our counts between p
         ns = numpy.random.multinomial(N, ps)
 
-        s = numpy.random.multivariate_normal(numpy.zeros(2), covs[0], size=ns[0])
+        s = numpy.random.multivariate_normal(origin, covs[0], size=ns[0])
         for i in xrange(1,len(covs)):
-            s = numpy.append(s, numpy.random.multivariate_normal(numpy.zeros(2), covs[i], size=ns[i]), axis=0)
+            s = numpy.append(s, numpy.random.multivariate_normal(origin, covs[i], size=ns[i]), axis=0)
         return s
 
-"""
-    Now we define a number of hypothesis types. Each uses the Distributions stochastics, stored in an array
-"""
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#    Now we define a number of hypothesis types. Each uses the Distributions stochastics, stored in an array
+#    The independent_components here come from Distributions and are used to define the weights_and_covariances
+#    via rotation, etc.
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 def zipa(*args):
     # zip with assertion of equal length
     l0=len(args[0])
