@@ -18,7 +18,7 @@ for it in xrange(100):
             genh = t()
             data = genh.sample(N=ndata)
 
-            myiter = run_inference(ALL_TYPES, data, burn=10000, yield_every=20000)
+            myiter = run_inference(ALL_TYPES, data, burn=1000, yield_every=2000)
 
             _, _, model_marginals = myiter.next() # just yield once, via yield_every
 
