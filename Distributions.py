@@ -2,7 +2,7 @@ import numpy
 import collections
 from copy import deepcopy
 import scipy.stats
-from scipy.stats import wishart ## NOTE: Requires scipy 0.16 development version
+from scipy.stats import wishart, norm ## NOTE: Requires scipy 0.16 development version
 from numpy.linalg import inv
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -76,6 +76,20 @@ class FreeNormal2D(object):
         fb = wishart.logpdf(val, self.df, self.c) - wishart.logpdf(self.c, self.df, val)
         return FreeNormal2D(c=val), fb
 
+class Normal1D(object):
+    """ Normal distribution """
+    def __init__(self, c=None, sd=1.0):
+        self.sd = sd
+        if c is None:  self.c = norm.rvs(scale=self.sd)
+        else:          self.c = c
+
+    def compute_prior(self):
+        return norm.logpdf(self.c, scale=self.sd)
+
+    def propose(self):
+        val = norm.rvs(scale=self.sd/20.0) + self.c
+        fb = 0.0
+        return Normal1D(c=val), fb
 
 class DirichletSample(object):
 

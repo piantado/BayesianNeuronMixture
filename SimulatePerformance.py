@@ -18,7 +18,7 @@ from Infer import run_inference
 
 for it in xrange(100):
 
-    for ndata in [500, 200, 100, 50, 20]:
+    for ndata in [5000, 1000, 500, 200, 100, 50, 20]:
 
         for ti, t in enumerate(ALL_TYPES):
 

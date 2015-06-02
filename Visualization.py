@@ -1,6 +1,7 @@
 
 import matplotlib.pyplot as plt # for plotting
 
+
 def plot(data, thetypes, best_posterior, best_sample, model_marginals):
     """ Convenient plots of our summary stats from Infer """
 
